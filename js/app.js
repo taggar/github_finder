@@ -2,4 +2,4 @@
 
 const userSearch = document.getElementById('userSearch');
 
-userSearch.addEventListener('input', githubUSerSearch(userSearch.value));
+userSearch.addEventListener('keyup', githubUserSearch);
