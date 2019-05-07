@@ -7,7 +7,12 @@ const client_secret = 'e63150a06acdb1db5ef9c6a960ea9332b3db3eb6';
 function githubUserSearch() {
 
     doXhrGetJson(`${baseUrl}${event.target.value}?client_id=${client_id}&client_secret=${client_secret}`)
-        .then(function (result) { showUserInfo(result) });
+        .then(function (result) {
+
+            showUserInfo(result);
+            doXhrGetJson(`${result.repos_url}?client_id=${client_id}&client_secret=${client_secret}`)
+                .then(function (result) { showUserRepo(result); })
+        });
 }
 
 /* Generic function to get an ajax json response
