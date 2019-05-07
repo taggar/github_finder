@@ -24,3 +24,26 @@ function showUserInfo(user) {
       </div>
     </div>`
 }
+
+function showUserRepo(repos) {
+    let target = document.getElementById('userRepo');
+    console.log(repos);
+    target.innerHTML = '';
+    for (let i = 0; i < 10; i++) {
+        let repo = repos[i];
+        console.log(repos[i]);
+        target.innerHTML += ` <div class="card card-body mb-2">
+        <div class="row">
+          <div class="col-md-6">
+            <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+          </div>
+          <div class="col-md-6">
+            <span class="badge badge-primary">Stars:${repo.stars}</span>
+            <span class="badge badge-secondary">Watchers: ${repo.watchers}</span>
+            <span class="badge badge-success">Forks: ${repo.forks}</span>
+          </div>
+        </div>
+      </div>`;
+    }
+
+}
