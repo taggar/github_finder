@@ -7,7 +7,7 @@ function showUserInfo(user) {
         <div class="row">
             <div class="col-md-3">
                 <img class="img-fluid mb-2" src="${user.avatar_url}">
-                    <a href="${user.html_url}" target="_blank" class="btn btn-primary btn-block">View Profile</a>
+                    <a href="${user.html_url}" target="_blank" class="btn btn-primary btn-block">View&nbsp;Profile</a>
       </div>
                 <div class="col-md-9">
                     <span class="badge badge-primary">Repo public: ${user.repos}</span>
