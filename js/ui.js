@@ -1,6 +1,7 @@
 // visualization
 
-function showUserInfo(user) {
+function showUserInfo(data) {
+  let user = data.user;
   let target = document.getElementById('userInfo');
   target.innerHTML = `
     <div class="  card card-body mb-3">
@@ -16,18 +17,20 @@ function showUserInfo(user) {
               user.repositories.totalCount
             }</span>
             <span class="badge badge-success">Followers: ${
-              user.followers
+              user.followers.totalCount
             }</span>
-            <span class="badge badge-info">Following: ${user.following}</span>
+            <span class="badge badge-info">Following: ${
+              user.following.totalCount
+            }</span>
             <br><br>
                 <ul class="list-group">
-                    <li class="list-group-item">Company:${user.company}</li>
+                    <li class="list-group-item">Company: ${user.company}</li>
                     <li class="list-group-item">Website/Blog: <a href="${
                       user.websiteUrl
                     }">${user.websiteUrl} </a></li>
                     <li class="list-group-item">Location: ${user.location}</li>
                     <li class="list-group-item">Member Since: ${
-                      user.created_at
+                      user.createdAt
                     }</li>
                 </ul>
         </div>
@@ -35,24 +38,27 @@ function showUserInfo(user) {
     </div>`;
 }
 
-function showUserRepo(repos) {
+function showUserRepo(data) {
+  let repos = data.user.repositories.nodes;
   let target = document.getElementById('userRepo');
   console.log(repos);
   target.innerHTML = '';
-  for (let i = 0; i < 10; i++) {
-    let repo = repos[i];
-    console.log(repos[i]);
+  for (let repo of repos) {
     target.innerHTML += ` <div class="card card-body mb-2">
         <div class="row">
           <div class="col-md-6">
-            <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+            <a href="${repo.homepageUrl}" target="_blank">${repo.name}</a>
           </div>
           <div class="col-md-6">
-            <span class="badge badge-primary">Stars:${repo.stars}</span>
-            <span class="badge badge-secondary">Watchers: ${
-              repo.watchers
+            <span class="badge badge-primary">Stars:${
+              repo.stargazers.totalCount
             }</span>
-            <span class="badge badge-success">Forks: ${repo.forks}</span>
+            <span class="badge badge-secondary">Watchers: ${
+              repo.watchers.totalCount
+            }</span>
+            <span class="badge badge-success">Forks: ${
+              repo.forks.totalCount
+            }</span>
           </div>
         </div>
       </div>`;
