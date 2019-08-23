@@ -79,3 +79,4 @@ const githubUserSearch = event => {
       }
    }, 200);
 };
+
