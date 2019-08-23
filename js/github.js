@@ -1,67 +1,82 @@
 // api calls
 
-const baseUrl = 'https://api.github.com/users/';
-const client_id = '538f75d2504eb830e987';
-const client_secret = 'e63150a06acdb1db5ef9c6a960ea9332b3db3eb6';
+/*
+https://developer.github.com/v4/guides/forming-calls/
+*/
 
-function githubUserSearch() {
+/*
+ Make sure you have a config.js file as follows:
+ 
+ var config = {
+   personalToken: 'your personal token here'
+};
 
-    doXhrGetJson(`${baseUrl}${event.target.value}?client_id=${client_id}&client_secret=${client_secret}`)
-        .then(function (result) {
+*/
 
-            showUserInfo(result);
-            doXhrGetJson(`${result.repos_url}?client_id=${client_id}&client_secret=${client_secret}`)
-                .then(function (result) { showUserRepo(result); })
-        });
-}
+const personalToken = config.personalToken;
+const baseUrl = `https://api.github.com/graphql`;
+const headers = new Headers();
+headers.set('Content-type', 'application/json');
+headers.set('Authorization', `bearer ${personalToken}`);
 
-/* Generic function to get an ajax json response
-===============================================*/
-function doXhrGetJson(url) {
-    return new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            resolve(this.response);
-        };
-        xhr.onerror = reject;
-        xhr.responseType = 'json';
-        xhr.open('GET', url);
-        xhr.send();
-    });
+let query = `query user($user:String!) { 
+  user(login: $user) { 
+    avatarUrl
+    bio
+    company
+    createdAt
+    email
+    isHireable
+    location
+    login
+    url
+    websiteUrl
+    followers { 
+      totalCount 
+    }
+    following { 
+      totalCount 
+    }
+    repositories (first: 10, privacy: PUBLIC) {
+      totalCount
+      nodes {
+        name
+        homepageUrl
+        watchers {
+          totalCount
+        }
+        forks {
+          totalCount
+        }
+        stargazers {
+          totalCount
+        }
+      }
+    }
+  }
+}`;
 
+const githubUserSearch = event => {
+   clearTimeout(typingTimer);
+   typingTimer = setTimeout(async () => {
+      let variables = {
+         user: event.target.value
+      };
+      let response = await fetch(baseUrl, {
+         method: 'POST',
+         headers: headers,
+         body: JSON.stringify({ query, variables })
+      });
 
+      console.log(response);
+      let result = await response.json();
+      console.log(result);
+      if (result.hasOwnProperty('errors')) {
+         showError(result.errors, event.target.value);
+      } else {
+         showUserInfo(result.data);
+         showUserRepo(result.data);
+      }
+   }, 200);
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
