@@ -37,11 +37,11 @@ let query = `query user($user:String!) {
     following { 
       totalCount 
     }
-    repositories (first: 10, privacy: PUBLIC) {
+    repositories (first: 100, privacy: PUBLIC) {
       totalCount
       nodes {
         name
-        homepageUrl
+        url
         watchers {
           totalCount
         }
